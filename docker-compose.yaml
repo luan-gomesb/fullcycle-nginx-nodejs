@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   app:
@@ -17,20 +17,16 @@ services:
       - db
   db:
     image: mysql:latest
-    command: --innodb-use-native-aio=0
+    command: --innodb-use-native-aio=0 --init-file /docker-entrypoint-initdb.d/init.sql 
     container_name: db
     restart: always
-    # habilita acesso tty ao container
     tty: true
-      #copia conteudo do container para pasta do host
-      ##vamos fazer bkp dos dados do banco mysql
     volumes:
       - ./mysql:/var/lib/mysql
+      - ./sql_files/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - MYSQL_DATABASE=nodedb
       - MYSQL_ROOT_PASSWORD=root
-        #      - MYSQL_USER=root
-    # networks_mode:pq nao networks?
     networks:
       - network_node
   nginx_proxy:
