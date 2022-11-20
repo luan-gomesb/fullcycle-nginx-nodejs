@@ -7,8 +7,6 @@ services:
     container_name: node_app
     entrypoint: dockerize -wait tcp://db:3306 -timeout 20s
     command: node main.js
-    volumes:
-      - ./node_app:/app
     networks:
       - network_node
     ports:
